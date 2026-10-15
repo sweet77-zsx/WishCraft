@@ -1,0 +1,602 @@
+/* ========================================================
+   生日贺卡工坊 主工作台样式 (明亮光鲜·欢庆暖阳风格)
+   ======================================================== */
+
+:root {
+    --bg-page: #faf8f5;
+    --bg-card: #ffffff;
+    --border-subtle: #f1ede6;
+    --border-hover: #ffd8d0;
+    --accent-coral: #ff5252;
+    --accent-orange: #ff7a45;
+    --accent-gradient: linear-gradient(135deg, #ff5252 0%, #ff7a45 100%);
+    --accent-gold: #f59e0b;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --text-muted: #94a3b8;
+    --radius-lg: 20px;
+    --radius-md: 14px;
+    --shadow-soft: 0 10px 30px rgba(220, 100, 80, 0.08);
+    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.04);
+    --shadow-hover: 0 12px 35px rgba(255, 82, 82, 0.18);
+    --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-page);
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(255, 122, 69, 0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(255, 82, 82, 0.06) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(245, 158, 11, 0.06) 0px, transparent 50%);
+    background-attachment: fixed;
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 顶部导航 */
+.app-header {
+    padding: 16px 36px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-subtle);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
+}
+
+.header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    width: 44px;
+    height: 44px;
+    background: #ffffff;
+    border: 1px solid rgba(255, 118, 117, 0.25);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 14px rgba(255, 82, 82, 0.15);
+    overflow: hidden;
+    padding: 3px;
+    box-sizing: border-box;
+    transition: transform 0.3s ease;
+}
+
+.logo-icon:hover {
+    transform: scale(1.06) rotate(3deg);
+}
+
+.logo-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.logo-text h1 {
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+    color: #1e293b;
+}
+
+.logo-text p {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+.header-badges {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.badge-tag {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #fff4f2;
+    border: 1px solid #ffe2dd;
+    color: #e63946;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* 主工作台双栏布局 */
+.workspace-container {
+    max-width: 1400px;
+    width: 100%;
+    margin: 24px auto 40px;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 32px;
+    flex: 1;
+}
+
+/* 左侧编辑面板 */
+.editor-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.editor-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-card);
+    transition: var(--transition);
+}
+
+.editor-card:hover {
+    box-shadow: var(--shadow-soft);
+    border-color: var(--border-hover);
+}
+
+.card-section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.section-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--accent-gradient);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(255, 82, 82, 0.35);
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* 模板选择卡片网格 */
+.template-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+}
+
+.template-card {
+    background: #faf8f5;
+    border: 2px solid transparent;
+    border-radius: var(--radius-md);
+    padding: 14px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    user-select: none;
+}
+
+.template-card:hover {
+    background: #fff0ed;
+    transform: translateY(-3px);
+}
+
+.template-card.active {
+    border-color: var(--accent-coral);
+    background: #fff5f3;
+    box-shadow: 0 6px 18px rgba(255, 82, 82, 0.16);
+}
+
+.template-swatch {
+    width: 100%;
+    height: 48px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+}
+
+.template-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+
+.template-badge-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    display: block;
+}
+
+/* 表单输入控件 */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-label small {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.form-input, .form-textarea {
+    background: #faf8f5;
+    border: 1px solid #e8e3dc;
+    border-radius: 12px;
+    padding: 11px 14px;
+    color: var(--text-primary);
+    font-size: 14px;
+    transition: var(--transition);
+    outline: none;
+    font-family: inherit;
+}
+
+.form-input:focus, .form-textarea:focus {
+    background: #ffffff;
+    border-color: var(--accent-coral);
+    box-shadow: 0 0 0 3px rgba(255, 82, 82, 0.15);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.6;
+}
+
+/* 快捷祝词分类标签 */
+.wish-presets-wrap {
+    margin-top: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.preset-category-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.preset-tab {
+    padding: 5px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    background: #f1ede6;
+    border: 1px solid transparent;
+    color: var(--text-secondary);
+    transition: var(--transition);
+}
+
+.preset-tab:hover {
+    color: var(--accent-coral);
+    background: #ffebe7;
+}
+
+.preset-tab.active {
+    background: #ff5252;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(255, 82, 82, 0.3);
+}
+
+.preset-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 150px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.preset-chip {
+    padding: 8px 12px;
+    background: #faf8f5;
+    border: 1px solid #eee8df;
+    border-radius: 10px;
+    font-size: 12px;
+    color: #475569;
+    cursor: pointer;
+    line-height: 1.5;
+    transition: var(--transition);
+}
+
+.preset-chip:hover {
+    background: #fff4f2;
+    border-color: #ffccd5;
+    color: #c9184a;
+}
+
+/* 导出操作面板 */
+.actions-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.btn-group {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 14px;
+}
+
+.btn-main {
+    padding: 13px 18px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: var(--transition);
+    border: none;
+    text-decoration: none;
+}
+
+.btn-primary-export {
+    background: var(--accent-gradient);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(255, 82, 82, 0.35);
+}
+
+.btn-primary-export:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 22px rgba(255, 82, 82, 0.5);
+}
+
+.btn-secondary-share {
+    background: #fff4f2;
+    border: 1px solid #ffdcd5;
+    color: #e63946;
+}
+
+.btn-secondary-share:hover {
+    background: #ffe8e4;
+    transform: translateY(-2px);
+    border-color: #ffb8ad;
+}
+
+.btn-outline-preview {
+    background: transparent;
+    border: 1px dashed #d1c8bd;
+    color: var(--text-secondary);
+    padding: 9px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-outline-preview:hover {
+    color: var(--accent-coral);
+    border-color: var(--accent-coral);
+    background: #fffafa;
+}
+
+.wechat-guide-hint {
+    background: #fffdf5;
+    border: 1px solid #fed7aa;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #78350f;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.08);
+}
+
+.hint-badge {
+    font-weight: 700;
+    color: #b45309;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+}
+
+.hint-body {
+    opacity: 0.92;
+}
+
+.hint-body strong {
+    color: #92400e;
+}
+
+/* 右侧预览面板 */
+.preview-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: sticky;
+    top: 86px;
+    height: calc(100vh - 110px);
+}
+
+.preview-bar {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 2px 4px;
+}
+
+.preview-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.preview-toggles {
+    display: flex;
+    background: #eee8df;
+    border-radius: 20px;
+    padding: 3px;
+    gap: 2px;
+}
+
+.toggle-pill {
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.toggle-pill.active {
+    background: #ffffff;
+    color: var(--accent-coral);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* 珍珠白现代手机展示框 (替代原先暗黑沉闷机身) */
+.device-frame {
+    width: 100%;
+    max-width: 410px;
+    height: 100%;
+    background: #ffffff;
+    border-radius: 38px;
+    border: 7px solid #e5e0d8;
+    box-shadow: 0 25px 60px rgba(180, 150, 140, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.8);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 手机灵动岛 */
+.device-notch {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 20px;
+    background: #e5e0d8;
+    border-radius: 20px;
+    z-index: 60;
+}
+
+.preview-inner {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* 全局反馈 Toast */
+.global-toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(50px);
+    opacity: 0;
+    background: #ffffff;
+    border: 1px solid #ffdcd5;
+    color: #1e293b;
+    padding: 12px 24px;
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(255, 82, 82, 0.18);
+    font-size: 13px;
+    font-weight: 600;
+    z-index: 1000;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.global-toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* 响应式断点 */
+@media (max-width: 992px) {
+    .workspace-container {
+        grid-template-columns: 1fr;
+    }
+    .preview-panel {
+        position: relative;
+        top: 0;
+        height: 640px;
+    }
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    .btn-group {
+        grid-template-columns: 1fr;
+    }
+}

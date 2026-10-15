@@ -1,0 +1,17 @@
+# IDE & Editor files
+.agents/
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Operating System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.log

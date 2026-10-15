@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心愿纪 (WishCraft) - 专属生日贺卡定制工坊 | 仪式感电子贺卡在线生成</title>
+    <link rel="icon" type="image/svg+xml" href="images/logo.svg">
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <meta name="description" content="心愿纪 (WishCraft) - 明亮温暖的在线生日贺卡定制工具，包含蛋糕、烟花、热气球、礼物盒、许愿星瓶等5大独特互动主题，一键生成独立单文件HTML或转发链接。">
+    <!-- 社交平台卡片抓取规范 -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="心愿纪 (WishCraft) - 专属生日贺卡定制工坊 🎂">
+    <meta property="og:description" content="定制专属明亮声光动效生日卡片，一键生成可转发的独立单文件 HTML 与在线互动链接。">
+    <meta property="og:image" content="https://wlmworld.top/cards/images/share-cover.jpg">
+    <meta itemprop="image" content="https://wlmworld.top/cards/images/share-cover.jpg">
+    <!-- Google Fonts 字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- 样式表 -->
+    <link rel="stylesheet" href="css/card-themes.css">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+    <!-- 微信/QQ 网页分享卡片专用隐藏缩略图 (绝对路径加速爬虫抓取) -->
+    <div style="display:none;font-size:0;line-height:0;margin:0;padding:0;overflow:hidden;width:0;height:0;">
+        <img src="https://wlmworld.top/cards/images/share-cover.jpg" width="300" height="300" alt="心愿纪 WishCraft">
+    </div>
+
+    <!-- 顶部导航栏 -->
+    <header class="app-header">
+        <div class="header-content">
+            <div class="logo-wrap">
+                <div class="logo-icon">
+                    <img src="images/logo.svg" alt="心愿纪 WishCraft Logo" width="38" height="38">
+                </div>
+                <div class="logo-text">
+                    <h1>心愿纪 · WishCraft</h1>
+                    <p>温暖明亮声光动效 · 专属生日贺卡定制工坊</p>
+                </div>
+            </div>
+            <div class="header-badges">
+                <span class="badge-tag">✨ 5款独立实体主题</span>
+                <span class="badge-tag">💌 仿真拆信封交互</span>
+                <span class="badge-tag">🎵 纯原生八音盒旋律</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 工作台主内容区 -->
+    <div class="workspace-container">
+        <!-- 左侧编辑面板 -->
+        <aside class="editor-panel">
+            <!-- 步骤 1: 选择主题实体 -->
+            <section class="editor-card" id="sectionTemplates">
+                <div class="card-section-header">
+                    <span class="section-num">1</span>
+                    <h2 class="section-title">选择生日主题风格</h2>
+                </div>
+                <div class="template-grid" id="templateGrid">
+                    <!-- JS 动态渲染 5 款主题卡片 (蛋糕、烟花、热气球、礼物盒、许愿星) -->
+                </div>
+            </section>
+
+            <!-- 步骤 2: 填写祝福信息 -->
+            <section class="editor-card" id="sectionInfo">
+                <div class="card-section-header">
+                    <span class="section-num">2</span>
+                    <h2 class="section-title">填写寿星与发件人信息</h2>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="inputRecipient" class="form-label">
+                            <span>收件人 / 寿星姓名</span>
+                            <small>例如：亲爱的小雅</small>
+                        </label>
+                        <input type="text" id="inputRecipient" class="form-input" value="晓华" placeholder="输入寿星姓名" maxlength="20">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputSender" class="form-label">
+                            <span>发件人 / 署名</span>
+                            <small>例如：好朋友 俊杰</small>
+                        </label>
+                        <input type="text" id="inputSender" class="form-input" value="爱你的朋友" placeholder="输入你的名字" maxlength="20">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="inputDate" class="form-label">
+                            <span>生日日期 / 庆典时间</span>
+                            <small>显示在卡片下方</small>
+                        </label>
+                        <input type="date" id="inputDate" class="form-input">
+                    </div>
+                </div>
+            </section>
+
+            <!-- 步骤 3: 祝贺语定制 -->
+            <section class="editor-card" id="sectionMessage">
+                <div class="card-section-header">
+                    <span class="section-num">3</span>
+                    <h2 class="section-title">挑选或撰写祝贺语</h2>
+                </div>
+                <div class="form-group">
+                    <div class="wish-presets-wrap">
+                        <div class="preset-category-tabs" id="presetTabs">
+                            <button type="button" class="preset-tab active" data-category="warm">🌟 温馨走心</button>
+                            <button type="button" class="preset-tab" data-category="humor">🥳 幽默搞怪</button>
+                            <button type="button" class="preset-tab" data-category="poetic">🍷 唯美诗意</button>
+                            <button type="button" class="preset-tab" data-category="sweet">💖 甜蜜真挚</button>
+                        </div>
+                        <div class="preset-list" id="presetList">
+                            <!-- JS 动态注入快捷祝词 -->
+                        </div>
+                    </div>
+
+                    <label for="inputMessage" class="form-label" style="margin-top: 14px;">
+                        <span>贺词正文（支持多行排版）</span>
+                    </label>
+                    <textarea id="inputMessage" class="form-textarea" placeholder="写下你的生日祝福...">愿你的岁月中，生活明朗，万物可爱，生辰安康，万事尽欢！🎂✨</textarea>
+                </div>
+            </section>
+
+            <!-- 步骤 4: 导出与分享 -->
+            <section class="editor-card actions-card" id="sectionExport">
+                <div class="card-section-header">
+                    <span class="section-num">4</span>
+                    <h2 class="section-title">生成与分享</h2>
+                </div>
+                <div class="btn-group">
+                    <button type="button" id="btnExportHtml" class="btn-main btn-primary-export" title="导出无需任何服务器的单文件HTML">
+                        <span>🚀 生成并下载独立 HTML 贺卡</span>
+                    </button>
+                    <button type="button" id="btnCopyLink" class="btn-main btn-secondary-share" title="复制包含贺卡内容的专属分享链接">
+                        <span>🔗 复制在线分享链接</span>
+                    </button>
+                </div>
+                <button type="button" id="btnFullscreenPreview" class="btn-outline-preview">
+                    <span>👁️ 在新标签页全屏预览贺卡</span>
+                </button>
+                <div class="wechat-guide-hint">
+                    <div class="hint-badge">💡 微信发卡片技巧</div>
+                    <div class="hint-body">
+                        微信聊天框粘贴默认只显示文本。若需发出的消息变为<strong>精美贺卡气泡卡片</strong>（带缩略图与标题）：复制链接后在微信中点开 ➔ 点击右上角<strong>「···」➔「发送给朋友」</strong>即可！
+                    </div>
+                </div>
+            </section>
+        </aside>
+
+        <!-- 右侧实时预览面板 -->
+        <main class="preview-panel">
+            <div class="preview-bar">
+                <div class="preview-title">
+                    <span>📱 实时交互效果预览</span>
+                </div>
+                <div class="preview-toggles">
+                    <button type="button" id="toggleFolded" class="toggle-pill active">信封形态</button>
+                    <button type="button" id="toggleUnfolded" class="toggle-pill">展开贺卡</button>
+                </div>
+            </div>
+
+            <!-- 手机仿真展示框 (明亮珍珠白外观) -->
+            <div class="device-frame">
+                <div class="device-notch"></div>
+                <div class="preview-inner">
+                    <!-- 贺卡场景 -->
+                    <div id="previewCardScene" class="card-scene theme-cake">
+                        <canvas id="previewParticleCanvas" class="particle-canvas"></canvas>
+
+                        <!-- 音乐播放开关 -->
+                        <button type="button" id="previewMusicBtn" class="music-toggle-btn" title="试听八音盒音乐">
+                            <span>🎵</span>
+                        </button>
+
+                        <!-- 信封包装 -->
+                        <div id="previewEnvelopeWrapper" class="envelope-wrapper">
+                            <div class="envelope-box">
+                                <div class="envelope-flap"></div>
+                                <div class="wax-seal">
+                                    <span class="seal-icon" id="previewSealIcon">🎂</span>
+                                    <span class="seal-hint">拆开</span>
+                                </div>
+                                <div class="envelope-pocket"></div>
+                                <div class="envelope-intro-text">
+                                    <span>💌 送给 <b id="previewIntroRecipientName">晓华</b> 的生日心意 · 点击拆开</span>
+                                </div>
+                            </div>
+
+                            <!-- 展开后的贺卡主体 -->
+                            <div class="card-main">
+                                <div class="card-inner-frame">
+                                    <div class="card-badge" id="previewCardBadge">SWEET BIRTHDAY</div>
+
+                                    <div class="card-title-wrap">
+                                        <h3 class="card-title" id="previewCardTitle">祝 晓华 生日快乐！</h3>
+                                        <p class="card-subtitle">愿所有美好都如约而至</p>
+                                    </div>
+
+                                    <!-- 动态挂载各主题独立实体组件 (蛋糕/烟花/热气球/礼物盒/许愿星瓶) -->
+                                    <div id="previewHeroMount"></div>
+
+                                    <!-- 祝贺语 -->
+                                    <div class="card-message-box">
+                                        <p class="card-message-text" id="previewCardMessage">愿你的岁月中，生活明朗，万物可爱，生辰安康，万事尽欢！🎂✨</p>
+                                    </div>
+
+                                    <!-- 底部落款 -->
+                                    <div class="card-footer">
+                                        <div class="card-date-wrap">
+                                            <span class="card-date" id="previewCardDate">📅 2026-10-15</span>
+                                        </div>
+                                        <div class="card-sender">
+                                            <div class="card-sender-label">祝福寄语来自</div>
+                                            <div class="card-sender-name" id="previewCardSender">爱你的朋友</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 愿望达成飘屏提示 -->
+                        <div id="previewWishToast" class="wish-toast">
+                            <span>✨ 蜡烛已吹灭！愿你所求皆所愿，岁岁平安！✨</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 全局操作反馈 Toast -->
+    <div id="globalToast" class="global-toast">
+        <span>已完成操作</span>
+    </div>
+
+    <!-- 脚本引用 -->
+    <script src="js/audio-synth.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/card-generator.js"></script>
+    <script src="js/bundle-assets.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

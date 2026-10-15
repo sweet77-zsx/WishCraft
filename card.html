@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title id="pageTitle">生日快乐祝福卡片 🎂</title>
+    <link rel="icon" type="image/svg+xml" href="images/logo.svg">
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <!-- Google Fonts 字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- 微信 / QQ / 社交卡片抓取规范 (Open Graph Protocol) -->
+    <meta name="description" id="metaDesc" content="点击拆开火漆信封，收下这份充满声光动效的专属生日祝福 ✨">
+    <meta property="og:type" content="website">
+    <meta property="og:title" id="ogTitle" content="送给你的生日贺卡 🎂">
+    <meta property="og:description" id="ogDesc" content="点击拆开火漆信封，收下这份充满声光动效的专属生日祝福 ✨">
+    <meta property="og:image" id="ogImage" content="https://wlmworld.top/cards/images/share-cover.jpg">
+    <!-- QQ 移动端卡片规范 -->
+    <meta itemprop="name" id="itempropName" content="送给你的生日贺卡 🎂">
+    <meta itemprop="description" id="itempropDesc" content="点击拆开火漆信封，收下这份充满声光动效的专属生日祝福 ✨">
+    <meta itemprop="image" id="itempropImage" content="https://wlmworld.top/cards/images/share-cover.jpg">
+    <link rel="stylesheet" href="css/card-themes.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body, html {
+            width: 100%;
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", Roboto, sans-serif;
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+<body id="cardBody" class="theme-cake">
+    <!-- 微信/QQ 网页分享气泡专用缩略图 (采用透明定位确保微信 100% 抓取，尺寸 300x300) -->
+    <div style="position:fixed;top:-9999px;left:-9999px;width:300px;height:300px;overflow:hidden;opacity:0.01;pointer-events:none;z-index:-1;">
+        <img id="wechatThumb" src="https://wlmworld.top/cards/images/share-cover.jpg" width="300" height="300" alt="生日贺卡分享封面">
+    </div>
+
+    <div class="card-scene">
+        <!-- 背景粒子画布 -->
+        <canvas id="particleCanvas" class="particle-canvas"></canvas>
+
+        <!-- 背景音乐控制 -->
+        <button id="musicBtn" class="music-toggle-btn" title="播放/暂停生日音乐" aria-label="音乐开关">
+            <span>🎵</span>
+        </button>
+
+        <!-- 拆信与贺卡容器 -->
+        <div id="envelopeWrapper" class="envelope-wrapper">
+            <!-- 信封外层 (点击拆开) -->
+            <div class="envelope-box">
+                <div class="envelope-flap"></div>
+                <div class="wax-seal">
+                    <span class="seal-icon" id="sealIcon">🎂</span>
+                    <span class="seal-hint">拆开</span>
+                </div>
+                <div class="envelope-pocket"></div>
+                <div class="envelope-intro-text">
+                    <span>💌 送给 <b id="introRecipientName">你</b> 的生日心意 · 点击拆开</span>
+                </div>
+            </div>
+
+            <!-- 贺卡内部实体 -->
+            <main class="card-main">
+                <div class="card-inner-frame">
+                    <div class="card-badge" id="cardBadge">SWEET BIRTHDAY</div>
+
+                    <div class="card-title-wrap">
+                        <h1 class="card-title" id="cardTitle">祝你生日快乐！</h1>
+                        <p class="card-subtitle">愿所有美好都如约而至</p>
+                    </div>
+
+                    <!-- 动态挂载各主题独特实体交互组件 (蛋糕/烟花/热气球/礼物盒/许愿星瓶) -->
+                    <div id="heroMount"></div>
+
+                    <!-- 祝贺语内容 -->
+                    <div class="card-message-box">
+                        <p class="card-message-text" id="cardMessage">愿新的一岁里，所求皆所愿，所行化坦途，多喜乐，长安宁！生日快乐！🎂✨</p>
+                    </div>
+
+                    <!-- 贺卡落款 -->
+                    <div class="card-footer">
+                        <div class="card-date-wrap">
+                            <span class="card-date" id="cardDate">📅 特别的一天</span>
+                        </div>
+                        <div class="card-sender">
+                            <div class="card-sender-label">祝福寄语来自</div>
+                            <div class="card-sender-name" id="cardSender">好友</div>
+                        </div>
+                    </div>
+
+                    <!-- 操作按钮 -->
+                    <div class="card-action-bar">
+                        <button type="button" id="btnShareCard" class="card-btn card-btn-secondary" title="分享给朋友">
+                            <span>💌 分享贺卡</span>
+                        </button>
+                        <a href="index.html" class="card-btn card-btn-primary">
+                            <span>✨ 我也要制作</span>
+                        </a>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- 许愿成功提示条 -->
+        <div id="wishToast" class="wish-toast">
+            <span>✨ 愿望已送达宇宙，岁岁平安！✨</span>
+        </div>
+
+        <!-- 微信右上角分享指引遮罩 -->
+        <div id="wechatShareMask" class="wechat-share-mask">
+            <svg class="share-guide-arrow" viewBox="0 0 48 48" fill="none">
+                <path d="M12 36C22 36 34 26 38 10M38 10L24 12M38 10L36 24" stroke="#fbbf24" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="share-guide-content">
+                <div class="share-guide-title">点击右上角「···」</div>
+                <div class="share-guide-desc">选择<b>「发送给朋友」</b>或<b>「分享到朋友圈」</b><br>即可发出专属精美卡片气泡 💌</div>
+            </div>
+            <button type="button" id="closeShareMask" class="share-guide-close">我知道了</button>
+        </div>
+    </div>
+
+    <!-- 引用脚本 -->
+    <script src="js/audio-synth.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/card-generator.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const encodedData = urlParams.get('d') || urlParams.get('data');
+            
+            let cardData = {
+                recipient: '朋友',
+                sender: '好友',
+                date: new Date().toISOString().split('T')[0],
+                message: '愿你的岁月中，生活明朗，万物可爱，生辰安康，万事尽欢！🎂✨',
+                theme: 'cake',
+                badge: 'SWEET BIRTHDAY'
+            };
+
+            if (encodedData) {
+                const decoded = CardGenerator.decodeCardData(encodedData);
+                if (decoded) {
+                    cardData = Object.assign(cardData, decoded);
+                }
+            }
+
+            const currentTpl = CardGenerator.templates.find(t => t.id === cardData.theme) || CardGenerator.templates[0];
+
+            // 更新 DOM 与社交卡片元数据 (微信/QQ气泡抓取)
+            const shareTitle = `💌 送给 ${cardData.recipient} 的生日贺卡 🎂`;
+            const shareDesc = cardData.message.replace(/\n/g, ' ').substring(0, 50) + (cardData.message.length > 50 ? '...' : '');
+
+            document.title = shareTitle;
+            document.getElementById('metaDesc')?.setAttribute('content', shareDesc);
+            document.getElementById('ogTitle')?.setAttribute('content', shareTitle);
+            document.getElementById('ogDesc')?.setAttribute('content', shareDesc);
+            document.getElementById('itempropName')?.setAttribute('content', shareTitle);
+            document.getElementById('itempropDesc')?.setAttribute('content', shareDesc);
+
+            const absCoverUrl = new URL('images/share-cover.jpg', window.location.href).href;
+            document.getElementById('ogImage')?.setAttribute('content', absCoverUrl);
+            document.getElementById('itempropImage')?.setAttribute('content', absCoverUrl);
+
+            document.getElementById('cardBody').className = `theme-${cardData.theme}`;
+            document.getElementById('introRecipientName').textContent = cardData.recipient;
+            document.getElementById('sealIcon').textContent = currentTpl.icon;
+            document.getElementById('cardTitle').textContent = `祝 ${cardData.recipient} 生日快乐！`;
+            document.getElementById('cardBadge').textContent = cardData.badge || currentTpl.badge;
+            document.getElementById('cardMessage').textContent = cardData.message;
+            document.getElementById('cardDate').textContent = `📅 ${cardData.date}`;
+            document.getElementById('cardSender').textContent = cardData.sender;
+
+            // 挂载独立实体组件
+            const heroMount = document.getElementById('heroMount');
+            heroMount.innerHTML = CardGenerator.getHeroHtml(cardData.theme);
+
+            // 初始化粒子引擎
+            const canvas = document.getElementById('particleCanvas');
+            const particles = new CardParticleSystem(canvas, cardData.theme);
+            particles.start();
+
+            // 初始化八音盒播放器
+            const player = new BirthdayAudioPlayer();
+            const musicBtn = document.getElementById('musicBtn');
+
+            // 拆信封交互
+            const envelopeWrapper = document.getElementById('envelopeWrapper');
+            let opened = false;
+            envelopeWrapper.addEventListener('click', () => {
+                if (opened) return;
+                opened = true;
+                envelopeWrapper.classList.add('is-opening');
+                
+                player.start();
+                musicBtn.classList.add('is-playing');
+
+                const rect = envelopeWrapper.getBoundingClientRect();
+                particles.burst(rect.left + rect.width / 2, rect.top + rect.height / 2, 70);
+
+                setTimeout(() => {
+                    envelopeWrapper.classList.remove('is-opening');
+                    envelopeWrapper.classList.add('is-opened');
+                }, 600);
+            });
+
+            // 音乐开关
+            musicBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const playing = player.toggle();
+                musicBtn.classList.toggle('is-playing', playing);
+            });
+
+            // 实体组件交互
+            const heroScene = heroMount.querySelector('#heroScene');
+            const heroHint = heroMount.querySelector('#heroHint');
+            const wishToast = document.getElementById('wishToast');
+
+            if (heroScene) {
+                heroScene.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const rect = heroScene.getBoundingClientRect();
+                    const cx = rect.left + rect.width / 2;
+                    const cy = rect.top + rect.height / 2;
+
+                    switch (cardData.theme) {
+                        case 'cake': {
+                            const cakeWrap = heroScene.querySelector('.cake-wrapper');
+                            if (cakeWrap && !cakeWrap.classList.contains('is-blown')) {
+                                cakeWrap.classList.add('is-blown');
+                                heroHint.textContent = '🎉 愿望已送达宇宙！';
+                                player.playBlowSound();
+                                particles.burst(cx, cy - 20, 50);
+                            }
+                            break;
+                        }
+                        case 'fireworks': {
+                            const fwWrap = heroScene.querySelector('.fireworks-wrapper');
+                            if (fwWrap) {
+                                fwWrap.classList.add('is-blooming');
+                            }
+                            player.playFireworkSound();
+                            particles.launchFirework(cx, 70);
+                            particles.launchFirework(cx - 50, 100);
+                            particles.launchFirework(cx + 50, 85);
+                            heroHint.textContent = '🎆 盛大烟火绚丽绽放！';
+                            break;
+                        }
+                        case 'balloon': {
+                            const balloonWrap = heroScene.querySelector('.balloon-wrapper');
+                            if (balloonWrap) {
+                                balloonWrap.classList.add('is-flying-away');
+                            }
+                            player.playMagicSparkleSound();
+                            particles.burst(cx, cy, 45);
+                            heroHint.textContent = '🎈 热气球飞向雪山云端！';
+                            break;
+                        }
+                        case 'giftbox': {
+                            const giftWrap = heroScene.querySelector('.giftbox-wrapper');
+                            if (giftWrap) {
+                                giftWrap.classList.add('is-opened');
+                            }
+                            player.playMagicSparkleSound();
+                            particles.burst(cx, cy - 25, 55);
+                            heroHint.textContent = '🧸 萌趣公仔跳出来啦！';
+                            break;
+                        }
+                        case 'starjar': {
+                            const jarWrap = heroScene.querySelector('.starjar-wrapper');
+                            if (jarWrap) {
+                                jarWrap.classList.add('is-drifting-away');
+                            }
+                            player.playMagicSparkleSound();
+                            particles.burst(cx, cy, 50);
+                            heroHint.textContent = '⭐ 许愿瓶乘着星光飘向远方！';
+                            break;
+                        }
+                    }
+
+                    wishToast.querySelector('span').textContent = `✨ ${currentTpl.wishResponse} ✨`;
+                    wishToast.classList.add('show');
+                    setTimeout(() => {
+                        wishToast.classList.remove('show');
+                    }, 3500);
+                });
+            }
+
+            // 微信分享与复制交互
+            const btnShareCard = document.getElementById('btnShareCard');
+            const wechatShareMask = document.getElementById('wechatShareMask');
+            const closeShareMask = document.getElementById('closeShareMask');
+            const isWeChat = /MicroMessenger/i.test(navigator.userAgent);
+
+            if (btnShareCard) {
+                btnShareCard.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (isWeChat) {
+                        wechatShareMask?.classList.add('show');
+                    } else {
+                        if (navigator.clipboard && navigator.clipboard.writeText) {
+                            navigator.clipboard.writeText(window.location.href);
+                        }
+                        wishToast.querySelector('span').textContent = '💌 已复制贺卡链接！在微信打开并点击右上角「···」即可发送卡片！';
+                        wishToast.classList.add('show');
+                        setTimeout(() => wishToast.classList.remove('show'), 3500);
+                    }
+                });
+            }
+
+            if (closeShareMask) {
+                closeShareMask.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    wechatShareMask?.classList.remove('show');
+                });
+            }
+            if (wechatShareMask) {
+                wechatShareMask.addEventListener('click', () => {
+                    wechatShareMask.classList.remove('show');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
